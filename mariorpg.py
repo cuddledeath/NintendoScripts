@@ -51,6 +51,17 @@ def defend(ser: serial.Serial):
     _press(ser, 'A')
     time.sleep(.25)
 
+
+# Function to make character use last item selected
+# Used primarily with the earlier times item to reset the battle
+def defend(ser: serial.Serial):
+    print("Using Item...")
+    _press(ser, 'X')
+    time.sleep(.25)
+    _press(ser, 'A')
+    time.sleep(.25)
+
+
 # Function to make mario select Super Jump and Jump in timed loops. 
 # Make sure Mario is selected, and super jump is highlighted in special menu
 # The fames may be off for others, I had Peach, and Geno in the party, with 100 special bar and was fighting the skikey and a flying koopa. 
@@ -144,3 +155,32 @@ def jump(ser: serial.Serial):
 
     time.sleep(.6825) # 79
     _press(ser, 'A')
+
+    for i in range(0, 16): # 80 - 100
+        time.sleep(.683)
+        _press(ser, 'A')
+
+# sudo ./bin/python 
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('command', type=str)
+    parser.add_argument('--serial', default=SERIAL_DEFAULT)
+    args = parser.parse_args()
+
+    with serial.Serial(args.serial, 9600) as ser:
+        for _ in range(args.count):
+            if args.command == 'jump':
+                jump(ser)
+            if args.command == 'start':
+                start(ser)
+            if args.command == 'defend':
+                defend(ser)
+            if args.command == 'item':
+                item(ser)
+            if args.command == 'look':
+                look(ser)
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
